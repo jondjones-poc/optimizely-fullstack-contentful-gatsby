@@ -34,6 +34,13 @@ if (!spaceId || !accessToken) {
   );
 }
 
+if (!process.env.SDK_KEY)
+{
+  throw new Error(
+    "Optimizely SDK key required and the access token need to be provided."
+  );
+}
+
 module.exports = {
   siteMetadata: {
     title: "Gatsby Contentful Starter",

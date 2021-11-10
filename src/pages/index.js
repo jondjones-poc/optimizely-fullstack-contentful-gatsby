@@ -1,6 +1,7 @@
 import React from 'react'
 import { graphql } from 'gatsby'
 import get from 'lodash/get'
+import { v4 as uuidv4 } from 'uuid';
 
 import Layout from '../components/layout'
 import Hero from '../components/hero'
@@ -16,7 +17,7 @@ class RootIndex extends React.Component {
         <Hero
           image={author?.heroImage.gatsbyImageData}
           title={author?.name}
-          content={author?.shortBio.shortBio}
+          userId={uuidv4()}
         />
         <ArticlePreview posts={posts} />
       </Layout>

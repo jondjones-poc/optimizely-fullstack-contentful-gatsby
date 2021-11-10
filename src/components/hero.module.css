@@ -9,10 +9,6 @@
 }
 
 .image {
-  /*
-    Ensure golden ratio for the hero size while limiting it to some extend to
-    the viewport width
-  */
   height: 61.8vh;
   max-height: 560px;
   width: 100%;
@@ -25,6 +21,7 @@
   width: 85%;
   padding: var(--space-2xl) var(--size-gutter) 0;
   position: absolute;
+  border: 5px red solid;
 }
 
 .title {

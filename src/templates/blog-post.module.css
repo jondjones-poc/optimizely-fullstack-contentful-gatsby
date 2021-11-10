@@ -19,6 +19,10 @@
   padding: var(--size-gutter) var(--size-gutter) calc(var(--size-gutter) * 2);
 }
 
+.experiment{
+  border: 1px solid pink;
+}
+
 .body {
   max-width: 48rem;
 }
@@ -93,4 +97,9 @@
   .article ul {
     padding-left: 0;
   }
+}
+
+
+.authorComponent {
+  border: 5px solid pink;
 }
