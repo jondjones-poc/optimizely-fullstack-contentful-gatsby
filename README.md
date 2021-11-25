@@ -25,7 +25,7 @@ CONTENTFUL_ACCESS_TOKEN=*****
 CONTENTFUL_SPACE_ID=*****
 SDK_KEY=*****
 GATSBY_SDK_KEY=*****
-``
+```
 
 ## Architecture 😍
 
