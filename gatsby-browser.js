@@ -3,7 +3,8 @@ const Layout = require("./src/components/layout").default;
 
 const reactOptimizelySDK = require('@optimizely/react-sdk');
 const optimizelyDataFileReact = reactOptimizelySDK.createInstance({
-  sdkKey: process.env.GATSBY_SDK_KEY
+  sdkKey: process.env.GATSBY_SDK_KEY,
+  isServerSide: true 
 })
 
 exports.wrapPageElement = ({ element, props }) => {

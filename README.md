@@ -35,6 +35,15 @@ GATSBY_SDK_KEY=*****
 
 The data file is fetched within `gatsby-browser.js` and then passed down into the app.  This approach ensures there is no latency on the web page waiting for the file to load.  More information can be found on can be found on `gatsby-browser.js` [here](https://www.gatsbyjs.com/docs/reference/config-files/gatsby-browser/).
 
+```javascript
+const optimizelyDataFileReact = reactOptimizelySDK.createInstance({
+  sdkKey: process.env.GATSBY_SDK_KEY,
+  isServerSide: true 
+})
+```
+
+**NOTE**:  Need to pass a prop called `isServerSide` if calling on server-side
+
 Another way of potentially managing global state is the [Global Context Plugin](https://www.gatsbyjs.com/plugins/gatsby-plugin-global-context/).
 
 ## GraphQL 👌

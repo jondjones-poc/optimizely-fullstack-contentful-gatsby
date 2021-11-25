@@ -32,13 +32,13 @@ class BlogPostTemplate extends React.Component {
 
     console.log('BlogPostTemplate -> componentWillMount', optimizelyDataFile);
 
-    optimizelyDataFile.onReady().then(() => {
+    optimizelyDataFile?.onReady().then(() => {
 
       const key = post.author.experimentKey;
 
       // using uuidv4 for random user id.  use your own identifier here
       const variationId = optimizelyDataFile.activate(key, uuidv4()); 
-      
+
       const contentFullOptimizelyMapping = JSON.parse(post.author.meta.internal.content);
       const contentFulId = contentFullOptimizelyMapping[variationId];
 
