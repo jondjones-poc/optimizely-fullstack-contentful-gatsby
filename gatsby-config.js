@@ -2,12 +2,20 @@ require("dotenv").config({
   path: `.env.${process.env.NODE_ENV}`,
 });
 
+const optimizelySDK = require('@optimizely/optimizely-sdk');
+const optimizelyDataFile = optimizelySDK.createInstance({
+  sdkKey: process.env.GATSBY_SDK_KEY,
+})
+
+
+
 const contentfulConfig = {
   spaceId: process.env.CONTENTFUL_SPACE_ID,
   accessToken:
     process.env.CONTENTFUL_ACCESS_TOKEN ||
     process.env.CONTENTFUL_DELIVERY_TOKEN,
 };
+
 
 // If you want to use the preview API please define
 // CONTENTFUL_HOST and CONTENTFUL_PREVIEW_ACCESS_TOKEN in your
@@ -55,7 +63,14 @@ module.exports = {
     "gatsby-plugin-image",
     {
       resolve: "gatsby-source-contentful",
-      options: contentfulConfig,
+      options: contentfulConfig, 
     },
+    {
+      resolve: 'gatsby-plugin-global-context',
+      options: {
+        context: {
+        }
+      }
+    }
   ],
 };

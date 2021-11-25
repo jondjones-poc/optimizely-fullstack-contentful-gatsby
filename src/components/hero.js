@@ -4,27 +4,21 @@ import { GatsbyImage } from 'gatsby-plugin-image'
 import * as styles from './hero.module.css'
 
 import {
-  createInstance,
   OptimizelyProvider,
   OptimizelyExperiment,
   OptimizelyVariation,
   OptimizelyFeature,
 } from '@optimizely/react-sdk'
 
-const optimizely = createInstance({
-  sdkKey: process.env.GATSBY_SDK_KEY,
-})
-
-const Hero = ({ image, title, userId }) => (
+const Hero = ({ image, title, userId, optimizelyDataFile }) => (
   <div className={styles.hero}>
     {image && (
       <GatsbyImage className={styles.image} alt={title} image={image} />
     )}
     <div className={styles.details}>
 
-    {/* using uuidv4 for random user id.  use your own identifier here */}
     <OptimizelyProvider
-        optimizely={optimizely}
+        optimizely={optimizelyDataFile}
         timeout={500}
         user={{id: userId}}
       > 

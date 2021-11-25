@@ -4,51 +4,41 @@ import get from 'lodash/get'
 import { v4 as uuidv4 } from 'uuid';
 
 import Seo from '../components/seo'
-import Layout from '../components/layout'
 import Hero from '../components/hero'
 import Tags from '../components/tags'
 import * as styles from './blog-post.module.css'
 
-import {
-  createInstance
-} from '@optimizely/react-sdk'
-
-if (!process.env.GATSBY_SDK_KEY) {
-  throw new Error(
-    "SDK Null!"
-  );
-}
-
-const optimizely = createInstance({
-  sdkKey: process.env.GATSBY_SDK_KEY,
-})
-
 class AuthorComponent extends React.Component {
   render() {
     const { data } = this.props
-    return <div className={styles.authorComponent}>{data}</div>
+    return <div className={styles.authorComponent}>CONTENTFUL EXPERIMENT DATA = {data}</div>
   }
 }
 class BlogPostTemplate extends React.Component {
   state = {
-    externalData: null,
+    contentFulExperimentData: null,
     post: null,
     previous: null,
     next: null
   };
 
-  /// Not best practice to wait for data file like this.  Better to get dat file on start
+  /// Not best practice to wait for data file like this.  Better to get data file on start
   componentWillMount() {
     const post = get(this.props, 'data.contentfulBlogPost')
     const previous = get(this.props, 'data.previous')
     const next = get(this.props, 'data.next')
-
+    const { optimizelyDataFile }= this.props.data;
     this.setState({post, previous, next});
 
-    optimizely.onReady().then(() => {
+    console.log('BlogPostTemplate -> componentWillMount', optimizelyDataFile);
+
+    optimizelyDataFile.onReady().then(() => {
 
       const key = post.author.experimentKey;
-      const variationId = optimizely.activate(key, uuidv4()); // using uuidv4 for random user id.  use your own identifier here
+
+      // using uuidv4 for random user id.  use your own identifier here
+      const variationId = optimizelyDataFile.activate(key, uuidv4()); 
+      
       const contentFullOptimizelyMapping = JSON.parse(post.author.meta.internal.content);
       const contentFulId = contentFullOptimizelyMapping[variationId];
 
@@ -56,32 +46,30 @@ class BlogPostTemplate extends React.Component {
       console.log('VariationId:', variationId);
       console.log('ContentFullOptimizelyMapping:', contentFullOptimizelyMapping);
       console.log('Contentful Id:', contentFulId);
+      console.log('Blog Post:', item);
 
       const item = post.author.variations.filter(item => item.contentful_id === contentFulId);
+      const contentFulExperimentData = item[0]?.name;
 
-      console.log('Item:', item);
-
-      const externalData = item[0]?.name;
-
-      if (externalData) {
-        this.setState({externalData});
+      if (contentFulExperimentData) {
+        this.setState({contentFulExperimentData});
+        console.log('contentFulExperimentData:', contentFulExperimentData);
       }
-
-      console.log('externalData:', externalData);
     });
   }
 
   render() {
-    const {post, next, previous, externalData}= this.state;
+    const {post, next, previous, contentFulExperimentData}= this.state;
+    const { optimizelyDataFile }= this.props.data;
 
-    console.log('ContentFul Data', post)
+    console.log('BlogIndex', this);
 
     if (!post) {
       return <></>
     }
   
     return (
-      <Layout location={this.props.location}>
+      <>
         <Seo
           title={post.title}
           description={post.description.childMarkdownRemark.excerpt}
@@ -91,10 +79,13 @@ class BlogPostTemplate extends React.Component {
           image={post.heroImage?.gatsbyImageData}
           title={post.title}
           content={post.description?.childMarkdownRemark?.excerpt}
+          // Passing a ready warmed up call down
+          optimizelyDataFile={optimizelyDataFile}
+          userId={uuidv4()}
         />
         <div className={styles.container}>
           <span className={styles.meta}>
-           <AuthorComponent data={externalData} />
+           <AuthorComponent data={contentFulExperimentData} />
             <time dateTime={post.rawDate}>{post.publishDate}</time> –{' '}
             {post.body?.childMarkdownRemark?.timeToRead} minute read
           </span>
@@ -128,7 +119,7 @@ class BlogPostTemplate extends React.Component {
             )}
           </div>
         </div>
-      </Layout>
+      </>
     )
   }
 }

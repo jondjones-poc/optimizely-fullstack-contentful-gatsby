@@ -3,24 +3,40 @@ import { graphql } from 'gatsby'
 import get from 'lodash/get'
 import { v4 as uuidv4 } from 'uuid';
 
-import Layout from '../components/layout'
 import Hero from '../components/hero'
 import ArticlePreview from '../components/article-preview'
+
+import * as styles from './home.module.css'
 
 class RootIndex extends React.Component {
   render() {
     const posts = get(this, 'props.data.allContentfulBlogPost.nodes')
     const [author] = get(this, 'props.data.allContentfulPerson.nodes')
+    const optimizelyDataFile = this.props.data.optimizelyDataFile;
+
+    console.log('RootIndex props', this.props)
+    console.log('optimizelyDataFile', optimizelyDataFile)
+
+    const onClick = () => {
+      console.log("click");
+      optimizelyDataFile.track('purchase')
+    }
 
     return (
-      <Layout location={this.props.location}>
+      <>
         <Hero
           image={author?.heroImage.gatsbyImageData}
           title={author?.name}
           userId={uuidv4()}
+          optimizelyDataFile={optimizelyDataFile}
         />
+        <div className={styles.container}>
+          <button onClick={onClick} className={styles.button}>
+            Create An Optimizely Event
+          </button>
+        </div>
         <ArticlePreview posts={posts} />
-      </Layout>
+      </>
     )
   }
 }

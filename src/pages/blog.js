@@ -3,20 +3,24 @@ import { graphql } from 'gatsby'
 import get from 'lodash/get'
 
 import Seo from '../components/seo'
-import Layout from '../components/layout'
 import Hero from '../components/hero'
 import ArticlePreview from '../components/article-preview'
 
 class BlogIndex extends React.Component {
   render() {
+    console.log('BlogIndex', this);
+
     const posts = get(this, 'props.data.allContentfulBlogPost.nodes')
+    const optimizelyDataFile = get(this, 'props.data.optimizelyDataFile')
 
     return (
-      <Layout location={this.props.location}>
+      <>
         <Seo title="Blog" />
-        <Hero title="Blog" />
+        if (optimizelyDataFile) {
+          <Hero title="Blog" optimizelyDataFile={optimizelyDataFile}/>
+        }
         <ArticlePreview posts={posts} />
-      </Layout>
+      </>
     )
   }
 }

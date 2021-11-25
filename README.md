@@ -31,9 +31,15 @@ GATSBY_SDK_KEY=*****
 
 ![Image](./diagram.jpg)
 
+## Data File Management 📊
+
+The data file is fetched within `gatsby-browser.js` and then passed down into the app.  This approach ensures there is no latency on the web page waiting for the file to load.  More information can be found on can be found on `gatsby-browser.js` [here](https://www.gatsbyjs.com/docs/reference/config-files/gatsby-browser/).
+
+Another way of potentially managing global state is the [Global Context Plugin](https://www.gatsbyjs.com/plugins/gatsby-plugin-global-context/).
+
 ## GraphQL 👌
 
-Below shows an example GraphQL query to get the variation from optimizely from Contentful.  YOu need ot use `meta` to map the experiment id to the contentful id.  YOu can then access the content from contentful within `variation_container`:
+Below shows an example GraphQL query to get the variation from optimizely from Contentful.  You need to use `meta` to map the experiment id to the contentful id.  You can then access the content from contentful within `variation_container`:
 
 ```graphql
  author {
@@ -71,9 +77,24 @@ See `templates` ➡ `blog-post.js`
 
 ![Contentful Setup](./contentful-optimizely-demo.gif)
 
-**Full Stack**
+**FullStack**
 
 ![Contentful Setup](./contentful-optimizely-demo-1.gif)
+
+## Events 📅
+
+It is also possible to pass data back to Optimizely in form of events.  The code to do events can be seen below:
+
+```javascript
+const onClick = () => {
+    console.log("click");
+    optimizelyDataFile.track('purchase')
+}
+```
+
+This feature can be seen in `pages` -> `index.js`:
+
+![how-does-the-optimizely-web-bring-your-own-ID-work-1.gif](how-does-the-optimizely-web-bring-your-own-ID-work-1.gif)
 
 ## Troubleshooting Tips 💁
 

@@ -1,0 +1,12 @@
+.button {
+  height: 75px;
+  background-color: red;
+  color: white;
+  font-weight: bold;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
